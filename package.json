@@ -1,0 +1,14 @@
+{
+  "name": "equipment-manager",
+  "version": "1.0.0",
+  "description": "The best way manage equipment",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "author": "JIO",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
