@@ -4,7 +4,7 @@
   "description": "The best way manage equipment",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.js"
+    "dev": "nodemon --exec babel-node index.js"
   },
   "author": "JIO",
   "license": "ISC",
@@ -13,6 +13,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
-    "@babel/preset-env": "^7.15.0"
+    "@babel/node": "^7.14.9",
+    "@babel/preset-env": "^7.15.0",
+    "nodemon": "^2.0.12"
   }
 }
