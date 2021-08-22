@@ -9,9 +9,9 @@ import {
 // Router 생성
 const equipRouter = express.Router();
 
-equipRouter.get("/:id", see);
+equipRouter.get("/:id(\\d+)", see);
+equipRouter.get("/:id(\\d+)/edit", getEdit);
+equipRouter.get("/:id(\\d+)/remove", removeEquip);
 equipRouter.get("/create", createEquip);
-equipRouter.get("/edit", getEdit);
-equipRouter.get("/remove", removeEquip);
 
 export default equipRouter;
