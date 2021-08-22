@@ -1,17 +1,25 @@
 import express from "express";
+
+// morgan middleware import
 import morgan from "morgan";
 
-import { handleHome, handleLogin } from "./controllers";
+// routers import
+import globalRouter from "./routers/globalrouter";
+import userRouter from "./routers/userRouter";
+import equipRouter from "./routers/equipRouter";
 
+// app 생성 -- express함수로 간단하게
 const app = express();
 
-const logger = morgan("dev");
+// morgan (loger) middleware 생성
+app.use(morgan("dev"));
 
-app.use(logger);
+// 루트 Router 사용하기
+app.use("/", globalRouter);
+app.use("/user", userRouter);
+app.use("/equip", equipRouter);
 
-app.get("/", handleHome);
-app.get("/login", handleLogin);
-
+// app에 port 생성, ⬆⬆ 모든 내용을 listen한다.
 const PORT = 5000;
 
 app.listen(PORT, () =>
