@@ -1,0 +1,13 @@
+doctype html
+html(lang="ko")
+    head
+        link(rel="stylesheet" href="https://unpkg.com/mvp.css")
+        title #{pageTitle} | Equip
+    body 
+        header 
+            h1=pageTitle
+        main 
+            block content
+    
+    //- partial의 pug include 가져오기
+    include partials/footer.pug

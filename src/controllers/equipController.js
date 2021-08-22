@@ -1,8 +1,10 @@
-export const home = (req, res) => res.send("헬로우");
+export const home = (req, res) => {
+  const equips = [];
+  return res.render("home", { pageTitle: "Home", equips });
+};
 
 export const see = (req, res) => {
-  console.log(req.params);
-  return res.send("See 장비");
+  return res.render("see", { pageTitle: "See" });
 };
 
 export const getEdit = (req, res) => {

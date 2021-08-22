@@ -11,6 +11,10 @@ import equipRouter from "./routers/equipRouter";
 // app 생성 -- express함수로 간단하게
 const app = express();
 
+// pug 템플릿 사용한다고 express에게 말하기
+app.set("view engine", "pug");
+app.set("views", process.cwd() + "/src/views");
+
 // morgan (loger) middleware 생성
 app.use(morgan("dev"));
 

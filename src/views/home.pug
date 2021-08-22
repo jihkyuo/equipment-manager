@@ -1,0 +1,9 @@
+extends base
+
+block content 
+    h1 Home!
+    ul
+        each item in equips
+            li=item
+        else 
+            li Sorry nothing found.
