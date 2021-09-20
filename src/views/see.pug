@@ -1,4 +1,5 @@
 extends base
 
 block content
-    h1 see
+    h3 #{equip.views} #{equip.views === 1 ? "view" : "views"}
+    a(href=`${equip.id}/edit`) Edit Equip &rarr;

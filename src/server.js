@@ -1,3 +1,6 @@
+// MongoDB와 서버 연결 : db.js 그대로 import
+import "./db";
+
 import express from "express";
 
 // morgan middleware import
@@ -17,6 +20,9 @@ app.set("views", process.cwd() + "/src/views");
 
 // morgan (loger) middleware 생성
 app.use(morgan("dev"));
+
+// urlencoded설정 -> post 후 req.body를 서버에 이해시킨다.
+app.use(express.urlencoded({ extended: true }));
 
 // 루트 Router 사용하기
 app.use("/", globalRouter);

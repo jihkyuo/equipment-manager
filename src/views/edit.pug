@@ -1,0 +1,7 @@
+extends base
+
+block content
+    h4 Change Name of Equip
+    form(method="POST")
+        input(name="name", placeholder="Equip Name", value=equip.name, required)
+        input(value="Save", type="submit")

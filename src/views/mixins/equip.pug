@@ -1,0 +1,7 @@
+mixin equipsmixin(equip)
+    div
+        h4
+            a(href=`/equip/${equip.id}`)=equip.name 
+        ul 
+            li 자산등록코드 : #{equip.code}
+            li 장소 : #{equip.place}

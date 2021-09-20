@@ -3,6 +3,9 @@ import {
   see,
   createEquip,
   getEdit,
+  postEdit,
+  getUpload,
+  postUpload,
   removeEquip,
 } from "../controllers/equipController";
 
@@ -10,7 +13,8 @@ import {
 const equipRouter = express.Router();
 
 equipRouter.get("/:id(\\d+)", see);
-equipRouter.get("/:id(\\d+)/edit", getEdit);
+equipRouter.route("/:id(\\d+)/edit").get(getEdit).post(postEdit);
+equipRouter.route("/upload").get(getUpload).post(postUpload);
 equipRouter.get("/:id(\\d+)/remove", removeEquip);
 equipRouter.get("/create", createEquip);
 
