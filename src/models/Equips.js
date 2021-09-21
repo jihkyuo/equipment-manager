@@ -1,8 +1,25 @@
-import Mongoose from "mongoose";
+import mongoose from "mongoose";
 
-const equipSchema = new Mongoose.Schema({
-  name: String,
-  description: String,
-  createAt: Date,
-  hashtags: [{ type: String }],
+const equipSchema = new mongoose.Schema({
+  name: { type: String, required: true, trim: true },
+  description: { type: String, required: true, trim: true },
+  manufacturer: { type: String, required: true, trim: true },
+  place: { type: String, required: true, trim: true },
+  code: { type: String, required: true, trim: true },
+  createAt: { type: Date, required: true, default: Date.now },
+  hashtags: [{ type: String, trim: true }],
+  meta: {
+    views: { type: Number, default: 0, required: true },
+    rating: { type: Number, default: 0, required: true },
+  },
 });
+
+//hook(or middleware) 생성
+equipSchema.static("formatHashtags", function (hashtags) {
+  return hashtags
+    .split(",")
+    .map((word) => (word.startsWith("#") ? word : `#${word}`));
+});
+
+const Equip = mongoose.model("Equips", equipSchema); //모델생성
+export default Equip;

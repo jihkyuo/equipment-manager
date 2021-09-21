@@ -1,0 +1,10 @@
+extends base
+include mixins/equip
+
+block content 
+    form(method="GET")
+        input(placeholder="Search by Equip name", trpe="text", name="keyword")
+        input(type="submit", value="Search now")
+
+    each item in equips 
+        +equipsmixin(item)

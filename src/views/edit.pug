@@ -1,7 +1,12 @@
 extends base
 
 block content
-    h4 Change Name of Equip
+    h4 Update Equip
     form(method="POST")
-        input(name="name", placeholder="Equip Name", value=equip.name, required)
+        input(name="name", placeholder="Equip Name", value=equips.name, required)
+        input(name="description", placeholder="Description", required, value=equips.description, type="text")
+        input(name="manufacturer", placeholder="Manufacturer", required, value=equips.manufacturer, type="text")
+        input(name="code", placeholder="자산등록코드", required, value=equips.code, type="text")
+        input(name="place", placeholder="설치장소", required, value=equips.place, type="text")
+        input(name="hashtags", placeholder="Hashtags, separated by comma.", required, value=equips.hashtags.join(), type="text")
         input(value="Save", type="submit")

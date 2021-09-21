@@ -1,30 +1,47 @@
-let equips = [
-  { name: "refriger", code: "RES-EA-IA-131", place: "W센터", views: 10, id: 1 },
-  { name: "청소기", code: "RES-EA-IA-131", place: "W센터", views: 5, id: 2 },
-  { name: "컴퓨터", code: "RES-EA-IA-131", place: "W센터", views: 1, id: 3 },
-];
+import Equip from "../models/Equips";
 
-export const home = (req, res) => {
-  return res.render("home", { pageTitle: "Home", equips });
+export const home = async (req, res) => {
+  try {
+    const equips = await Equip.find({}).sort({ createAt: "desc" });
+    return res.render("home", { pageTitle: "Home", equips });
+  } catch {
+    return res.render("server-error");
+  }
 };
 
-export const see = (req, res) => {
+export const see = async (req, res) => {
   const { id } = req.params;
-  const equip = equips[id - 1];
-  return res.render("see", { pageTitle: `Managing: ${equip.name}`, equip });
+  const equips = await Equip.findById(id);
+  if (!equips) {
+    return res.render("404", { pageTitle: "Equip not found." });
+  }
+  return res.render("see", { pageTitle: equips.name, equips });
 };
 
-export const getEdit = (req, res) => {
+export const getEdit = async (req, res) => {
   const { id } = req.params;
-  const equip = equips[id - 1];
-  return res.render("edit", { pageTitle: `Editing: ${equip.name}`, equip });
+  const equips = await Equip.findById(id);
+  if (!equips) {
+    return res.render("404", { pageTitle: "Equip not found." });
+  }
+  return res.render("edit", { pageTitle: `Editing: ${equips.name}`, equips });
 };
 
-export const postEdit = (req, res) => {
+export const postEdit = async (req, res) => {
   const { id } = req.params;
-  const { name } = req.body;
-  const equip = equips[id - 1];
-  equip.name = name;
+  const { name, description, manufacturer, place, code, hashtags } = req.body;
+  const equips = await Equip.exists({ _id: id });
+  if (!equips) {
+    return res.render("404", { pageTitle: "Equip not found." });
+  }
+  await Equip.findByIdAndUpdate(id, {
+    name,
+    description,
+    manufacturer,
+    place,
+    code,
+    hashtags: Equip.formatHashtags(hashtags),
+  });
   return res.redirect(`/equip/${id}`);
 };
 
@@ -32,21 +49,42 @@ export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: "Upload" });
 };
 
-export const postUpload = (req, res) => {
-  const { name } = req.body;
-  const newEquip = {
-    name,
-    code: "RES-EA-IA-131",
-    place: "W센터",
-    views: 10,
-    id: equips.length + 1,
-  };
-  equips.push(newEquip);
+export const postUpload = async (req, res) => {
+  const { name, description, manufacturer, place, code, hashtags } = req.body;
+  try {
+    await Equip.create({
+      name,
+      description,
+      manufacturer,
+      place,
+      code,
+      hashtags: Equip.formatHashtags(hashtags),
+    });
+    return res.redirect("/");
+  } catch (error) {
+    console.log(error);
+    return res.render("upload", {
+      pageTitle: "Upload Equip",
+      errorMessage: error._message,
+    });
+  }
+};
+
+export const deleteEquip = async (req, res) => {
+  const { id } = req.params;
+  await Equip.findByIdAndDelete(id);
   return res.redirect("/");
 };
 
-export const removeEquip = (req, res) => res.send("remove 장비");
-
-export const search = (req, res) => res.send("Search 장비");
-
-export const createEquip = (req, res) => res.send("Create 장비");
+export const search = async (req, res) => {
+  const { keyword } = req.query;
+  let equips = [];
+  if (keyword) {
+    equips = await Equip.find({
+      name: {
+        $regex: new RegExp(keyword, "i"),
+      },
+    });
+  }
+  return res.render("search", { pageTitle: "Search", equips });
+};

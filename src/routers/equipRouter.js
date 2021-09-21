@@ -1,21 +1,19 @@
 import express from "express";
 import {
   see,
-  createEquip,
   getEdit,
   postEdit,
   getUpload,
   postUpload,
-  removeEquip,
+  deleteEquip,
 } from "../controllers/equipController";
 
 // Router 생성
 const equipRouter = express.Router();
 
-equipRouter.get("/:id(\\d+)", see);
-equipRouter.route("/:id(\\d+)/edit").get(getEdit).post(postEdit);
+equipRouter.get("/:id([0-9a-f]{24})", see);
+equipRouter.route("/:id([0-9a-f]{24})/edit").get(getEdit).post(postEdit);
+equipRouter.route("/:id([0-9a-f]{24})/delete").get(deleteEquip);
 equipRouter.route("/upload").get(getUpload).post(postUpload);
-equipRouter.get("/:id(\\d+)/remove", removeEquip);
-equipRouter.get("/create", createEquip);
 
 export default equipRouter;

@@ -1,12 +1,7 @@
 extends base
 include mixins/equip
 
-block content 
-    h1 Home!
-    nav 
-        ul 
-            li 
-                a(href="/equip/upload") Upload Equip
+block content        
     ul
         each item in equips
             +equipsmixin(item)

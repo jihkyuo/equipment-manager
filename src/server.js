@@ -1,6 +1,3 @@
-// MongoDB와 서버 연결 : db.js 그대로 import
-import "./db";
-
 import express from "express";
 
 // morgan middleware import
@@ -29,9 +26,4 @@ app.use("/", globalRouter);
 app.use("/user", userRouter);
 app.use("/equip", equipRouter);
 
-// app에 port 생성, ⬆⬆ 모든 내용을 listen한다.
-const PORT = 5000;
-
-app.listen(PORT, () =>
-  console.log(`✅ Server Listening on port http://localhost:${PORT}`)
-);
+export default app;
