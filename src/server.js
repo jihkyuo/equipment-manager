@@ -4,7 +4,7 @@ import express from "express";
 import morgan from "morgan";
 
 // routers import
-import globalRouter from "./routers/globalrouter";
+import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import equipRouter from "./routers/equipRouter";
 
@@ -22,7 +22,7 @@ app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
 
 // 루트 Router 사용하기
-app.use("/", globalRouter);
+app.use("/", rootRouter);
 app.use("/user", userRouter);
 app.use("/equip", equipRouter);
 
