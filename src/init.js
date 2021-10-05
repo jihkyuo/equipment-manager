@@ -3,6 +3,7 @@ import "./db";
 
 // 스키마 모델 가져오기
 import "./models/Equips";
+import "./models/User";
 
 // app 가져오기
 import app from "./server";
