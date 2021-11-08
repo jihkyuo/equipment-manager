@@ -2,7 +2,7 @@
 
 장비관리시스템
 
-<!-- global router -->
+<!-- global router => root router-->
 
 /
 /join
