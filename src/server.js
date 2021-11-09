@@ -3,6 +3,9 @@ import express from "express";
 // morgan middleware import
 import morgan from "morgan";
 
+// express-session import
+import session from "express-session";
+
 // routers import
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
@@ -20,6 +23,23 @@ app.use(morgan("dev"));
 
 // urlencoded설정 -> post 후 req.body를 서버에 이해시킨다.
 app.use(express.urlencoded({ extended: true }));
+
+// 세션 미들웨어 초기화
+app.use(
+  session({
+    secret: "Helloo!",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+//백엔드가 기억하고 있는 user들을 보여주는 미들웨어
+app.use((req, res, next) => {
+  req.sessionStore.all((error, sessions) => {
+    console.log(sessions);
+    next();
+  });
+});
 
 // 루트 Router 사용하기
 app.use("/", rootRouter);

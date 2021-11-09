@@ -22,7 +22,7 @@ export const getEdit = async (req, res) => {
   const { id } = req.params;
   const equips = await Equip.findById(id);
   if (!equips) {
-    return res.render("404", { pageTitle: "Equip not found." });
+    return res.status(404).render("404", { pageTitle: "Equip not found." });
   }
   return res.render("edit", { pageTitle: `Editing: ${equips.name}`, equips });
 };
@@ -32,7 +32,7 @@ export const postEdit = async (req, res) => {
   const { name, description, manufacturer, place, code, hashtags } = req.body;
   const equips = await Equip.exists({ _id: id });
   if (!equips) {
-    return res.render("404", { pageTitle: "Equip not found." });
+    return res.status(404).render("404", { pageTitle: "Equip not found." });
   }
   await Equip.findByIdAndUpdate(id, {
     name,
@@ -63,7 +63,7 @@ export const postUpload = async (req, res) => {
     return res.redirect("/");
   } catch (error) {
     console.log(error);
-    return res.render("upload", {
+    return res.status(400).render("upload", {
       pageTitle: "Upload Equip",
       errorMessage: error._message,
     });
