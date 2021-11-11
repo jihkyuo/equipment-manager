@@ -66,6 +66,22 @@ export const postLogin = async (req, res) => {
   res.redirect("/");
 };
 
+export const startGithubLogin = (req, res) => {
+  // 전체 url : https://github.com/login/oauth/authorize?client_id=4fce6fbcc9818b98c747&allow_signup=false&scope=user:email read:user
+
+  const baseUrl = "https://github.com/login/oauth/authorize";
+  const config = {
+    client_id: "4fce6fbcc9818b98c747",
+    allow_signup: false,
+    scope: "read:user user:email",
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+  return res.redirect(finalUrl);
+};
+
+export const finishGithubLogin = (req, res) => {};
+
 export const getUserEdit = (req, res) => res.send("user Edit");
 
 export const getLogout = (req, res) => res.send("user Logout");
