@@ -6,6 +6,9 @@ import morgan from "morgan";
 // express-session import
 import session from "express-session";
 
+// MongoStore import => 세션을 DB에 저장하여 로그인을 유지시키기 위한 작업
+import MongoStore from "connect-mongo";
+
 // routers import
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
@@ -30,9 +33,10 @@ app.use(express.urlencoded({ extended: true }));
 // 세션 미들웨어 초기화: 이 미들웨어가 브라우저에 쿠키를 전송한다.
 app.use(
   session({
-    secret: "Helloo!",
-    resave: true,
-    saveUninitialized: true,
+    secret: process.env.COOKIE_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
   })
 );
 
