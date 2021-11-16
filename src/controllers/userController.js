@@ -119,6 +119,8 @@ export const finishGithubLogin = async (req, res) => {
       })
     ).json();
 
+    console.log(userData);
+
     // user의 email정보를 불러오기 위해 fetch로 요청하기
     const emailData = await (
       await fetch(`${apiUser}/user/emails`, {
@@ -129,11 +131,38 @@ export const finishGithubLogin = async (req, res) => {
     ).json();
 
     //받아온 email 데이터 중 verified 이면서 primary인 것들 찾기
-    const email = emailData.find(
+    const emailObj = emailData.find(
       (e) => e.primary === true && e.verified === true
     );
-    if (!email) {
+
+    // 찾은 email이 없을 때 리다이렉트 시킴
+    if (!emailObj) {
       return res.redirect("/login");
+    }
+
+    // emailObj의 조건을 가진 email을 발견 했을 때
+    const existingUser = await User.findOne({ email: emailObj.email });
+    // 로그인 시킴
+    if (existingUser) {
+      // 로그인 성공
+      req.session.loggedIn = true;
+      req.session.user = existingUser;
+      return res.redirect("/");
+    } else {
+      // 로그인 실패 -> 계정생성
+      const user = await User.create({
+        name: userData.name ? userData.name : userData.login,
+        username: userData.login,
+        email: emailObj.email,
+        password: "",
+        socialOnly: true,
+        location: userData.location,
+      });
+
+      // 계정 생성 후 로그인 시키자
+      req.session.loggedIn = true;
+      req.session.user = user;
+      return res.redirect("/");
     }
   } else {
     // 'access_token'이 없으면 로그인 페이지로 리다이렉트 됨. 추후에 로그인 안된 안내를 user에게 줘보도록 하자
