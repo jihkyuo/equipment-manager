@@ -46,7 +46,7 @@ export const getLogin = (req, res) => {
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const pageTitle = "Login";
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ username, socialOnly: false });
   if (!user) {
     return res.status(400).render("login", {
       pageTitle,
@@ -141,37 +141,33 @@ export const finishGithubLogin = async (req, res) => {
     }
 
     // emailObj의 조건을 가진 email을 발견 했을 때
-    const existingUser = await User.findOne({ email: emailObj.email });
+    let user = await User.findOne({ email: emailObj.email });
     // 로그인 시킴
-    if (existingUser) {
-      // 로그인 성공
-      req.session.loggedIn = true;
-      req.session.user = existingUser;
-      return res.redirect("/");
-    } else {
+    if (!user) {
       // 로그인 실패 -> 계정생성
-      const user = await User.create({
+      user = await User.create({
         name: userData.name ? userData.name : userData.login,
         username: userData.login,
         email: emailObj.email,
+        avatarUrl: userData.avatar_url,
         password: "",
         socialOnly: true,
         location: userData.location,
       });
-
-      // 계정 생성 후 로그인 시키자
-      req.session.loggedIn = true;
-      req.session.user = user;
-      return res.redirect("/");
     }
+    // user를 찾을 경우 or 계정 생성 후 => 로그인 시키자
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
   } else {
     // 'access_token'이 없으면 로그인 페이지로 리다이렉트 됨. 추후에 로그인 안된 안내를 user에게 줘보도록 하자
     return res.redirect("/login");
   }
 };
 
+export const getLogout = (req, res) => {
+  req.session.destroy();
+  return res.redirect("/");
+};
+
 export const getUserEdit = (req, res) => res.send("user Edit");
-
-export const getLogout = (req, res) => res.send("user Logout");
-
-export const removeUser = (req, res) => res.send("user remove");
