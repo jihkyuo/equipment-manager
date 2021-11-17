@@ -119,7 +119,7 @@ export const finishGithubLogin = async (req, res) => {
       })
     ).json();
 
-    console.log(userData);
+    // console.log(userData);
 
     // user의 email정보를 불러오기 위해 fetch로 요청하기
     const emailData = await (
@@ -170,4 +170,50 @@ export const getLogout = (req, res) => {
   return res.redirect("/");
 };
 
-export const getUserEdit = (req, res) => res.send("user Edit");
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", {
+    pageTitle: `Edit ${res.locals.loggedInUser.name}의 Profile`,
+  });
+};
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location },
+  } = req;
+
+  console.log(res.locals);
+
+  const loggedInUserUsername = res.locals.loggedInUser.username;
+  const loggedInUserEmail = res.locals.loggedInUser.email;
+
+  const exists = await User.exists({ $or: [{ username }, { email }] });
+  if (
+    exists &&
+    (username !== loggedInUserUsername || email !== loggedInUserEmail)
+  ) {
+    return res.status(400).render("edit-profile", {
+      pageTitle: `Edit ${res.locals.loggedInUser.name}의 Profile`,
+      errorMessage: "입력한 username/email은 이미 있습니다.",
+    });
+  }
+
+  const updateUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+
+  // 세션 업뎃을 해줘야 view에서 보여짐
+  req.session.user = updateUser;
+
+  console.log(updateUser);
+
+  res.redirect("/users/edit");
+};

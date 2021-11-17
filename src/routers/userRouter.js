@@ -1,17 +1,19 @@
 import express from "express";
 import {
-  getUserEdit,
+  getEdit,
+  postEdit,
   getLogout,
   startGithubLogin,
   finishGithubLogin,
 } from "../controllers/userController";
+import { protectorMiddleware, publicOnlyMiddleware } from "../middlewares";
 
 // Router 생성
 const userRouter = express.Router();
 
-userRouter.get("/edit", getUserEdit);
-userRouter.get("/logout", getLogout);
-userRouter.get("/github/start", startGithubLogin);
-userRouter.get("/github/finish", finishGithubLogin);
+userRouter.route("/edit").all(protectorMiddleware).get(getEdit).post(postEdit);
+userRouter.get("/logout", protectorMiddleware, getLogout);
+userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
+userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 
 export default userRouter;

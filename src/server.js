@@ -15,7 +15,7 @@ import userRouter from "./routers/userRouter";
 import equipRouter from "./routers/equipRouter";
 
 // local 미들웨어 import
-import { localsMiddleware } from "./middlewares";
+import { localsMiddleware, protectorMiddleware } from "./middlewares";
 
 // app 생성 -- express함수로 간단하게
 const app = express();
