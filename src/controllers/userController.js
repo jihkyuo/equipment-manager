@@ -185,16 +185,24 @@ export const postEdit = async (req, res) => {
 
   console.log(res.locals);
 
+  // 나중에 더 깔끔하게 코드를 만들어보자.
   const loggedInUserUsername = res.locals.loggedInUser.username;
   const loggedInUserEmail = res.locals.loggedInUser.email;
-
+  const pageTitle = `Edit ${res.locals.loggedInUser.name}의 Profile`;
   const exists = await User.exists({ $or: [{ username }, { email }] });
-  if (
-    exists &&
-    (username !== loggedInUserUsername || email !== loggedInUserEmail)
-  ) {
+  if (username == loggedInUserUsername) {
     return res.status(400).render("edit-profile", {
-      pageTitle: `Edit ${res.locals.loggedInUser.name}의 Profile`,
+      pageTitle,
+      errorMessage: "본인의 username을 입력했습니다.",
+    });
+  } else if (email == loggedInUserEmail) {
+    return res.status(400).render("edit-profile", {
+      pageTitle,
+      errorMessage: "본인의 email을 입력했습니다.",
+    });
+  } else if (exists) {
+    return res.status(400).render("edit-profile", {
+      pageTitle,
       errorMessage: "입력한 username/email은 이미 있습니다.",
     });
   }
