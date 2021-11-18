@@ -183,8 +183,6 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
   } = req;
 
-  console.log(res.locals);
-
   // 나중에 더 깔끔하게 코드를 만들어보자.
   const loggedInUserUsername = res.locals.loggedInUser.username;
   const loggedInUserEmail = res.locals.loggedInUser.email;
@@ -221,7 +219,51 @@ export const postEdit = async (req, res) => {
   // 세션 업뎃을 해줘야 view에서 보여짐
   req.session.user = updateUser;
 
-  console.log(updateUser);
-
   res.redirect("/users/edit");
+};
+
+export const getChangePassword = (req, res) => {
+  return res.render("users/change-password", {
+    pageTitle: "Change Password",
+  });
+};
+
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { oldPassword, newPassword, newPasswordConfirm },
+  } = req;
+  const user = await User.findById(_id);
+  // oldPw가 기존 pw와 일치하는지
+  const ok = await bcrypt.compare(oldPassword, user.password);
+  if (!ok) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "기존 비밀번호와 일치하지 않습니다.",
+    });
+  }
+
+  // new 비번과 비번확인의 일치 검사
+  if (newPassword !== newPasswordConfirm) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "비밀번호 확인이 일치하지 않습니다.",
+    });
+  }
+
+  // 본격 비밀번호 변경 => 스키마의 pre save 이용
+
+  user.password = newPassword;
+
+  await user.save();
+
+  // 방법 1: 세션의 비번 업뎃을 안해주면 => 업뎃 후에도 old비번은 이전 비번을 가리킴
+  // req.session.user.password = user.password;
+
+  // 방법 2: 로그아웃 시키고 세션을 파괴하면 해결됨(나는 방법 1로)
+  // return res.redirect("/users/logout");
+
+  return res.redirect("/");
 };
