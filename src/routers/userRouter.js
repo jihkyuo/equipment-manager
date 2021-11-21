@@ -1,4 +1,5 @@
 import express from "express";
+
 import {
   getEdit,
   postEdit,
@@ -8,12 +9,20 @@ import {
   getChangePassword,
   postChangePassword,
 } from "../controllers/userController";
-import { protectorMiddleware, publicOnlyMiddleware } from "../middlewares";
+import {
+  protectorMiddleware,
+  publicOnlyMiddleware,
+  avatarUpload,
+} from "../middlewares";
 
 // Router 생성
 const userRouter = express.Router();
 
-userRouter.route("/edit").all(protectorMiddleware).get(getEdit).post(postEdit);
+userRouter
+  .route("/edit")
+  .all(protectorMiddleware)
+  .get(getEdit)
+  .post(avatarUpload.single("avatar"), postEdit);
 userRouter.get("/logout", protectorMiddleware, getLogout);
 userRouter
   .route("/change-password")

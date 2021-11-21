@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const equipSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   description: { type: String, required: true, trim: true },
+  fileUrl: { type: String, required: true },
   manufacturer: { type: String, required: true, trim: true },
   place: { type: String, required: true, trim: true },
   code: { type: String, required: true, trim: true },

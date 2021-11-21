@@ -50,11 +50,13 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
+  const { path: fileUrl } = req.file;
   const { name, description, manufacturer, place, code, hashtags } = req.body;
   try {
     await Equip.create({
       name,
       description,
+      fileUrl,
       manufacturer,
       place,
       code,

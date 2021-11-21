@@ -51,6 +51,7 @@ app.use(
 app.use(localsMiddleware);
 
 // 루트 Router 사용하기
+app.use("/uploads", express.static("uploads"));
 app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/equip", equipRouter);

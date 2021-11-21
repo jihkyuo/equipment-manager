@@ -7,7 +7,7 @@ import {
   postUpload,
   deleteEquip,
 } from "../controllers/equipController";
-import { protectorMiddleware } from "../middlewares";
+import { protectorMiddleware, videoUpload } from "../middlewares";
 
 // Router 생성
 const equipRouter = express.Router();
@@ -26,6 +26,6 @@ equipRouter
   .route("/upload")
   .all(protectorMiddleware)
   .get(getUpload)
-  .post(postUpload);
+  .post(videoUpload.single("video"), postUpload);
 
 export default equipRouter;
