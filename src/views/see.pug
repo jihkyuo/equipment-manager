@@ -11,6 +11,10 @@ block content
         li #{equips.meta.views} #{equips.meta.views === 1 ? "view" : "views"}
     p 
         small=equips.createAt
-    a(href=`${equips.id}/edit`) Edit Equip &rarr;
-    br
-    a(href=`${equips.id}/delete`) Delete Equip &rarr;
+    div
+        small Uploaded by 
+            a(href=`/users/${owner._id}`) #{owner.name}
+    if String(equips.owner) === String(loggedInUser._id)
+        a(href=`${equips.id}/edit`) Edit Equip &rarr;
+        br
+        a(href=`${equips.id}/delete`) Delete Equip &rarr;

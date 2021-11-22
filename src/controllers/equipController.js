@@ -1,4 +1,5 @@
 import Equip from "../models/Equips";
+import User from "../models/User";
 
 export const home = async (req, res) => {
   try {
@@ -12,10 +13,11 @@ export const home = async (req, res) => {
 export const see = async (req, res) => {
   const { id } = req.params;
   const equips = await Equip.findById(id);
+  const owner = await User.findById(equips.owner);
   if (!equips) {
     return res.render("404", { pageTitle: "Equip not found." });
   }
-  return res.render("see", { pageTitle: equips.name, equips });
+  return res.render("see", { pageTitle: equips.name, equips, owner });
 };
 
 export const getEdit = async (req, res) => {
@@ -50,6 +52,9 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
+  const {
+    user: { _id },
+  } = req.session;
   const { path: fileUrl } = req.file;
   const { name, description, manufacturer, place, code, hashtags } = req.body;
   try {
@@ -60,6 +65,7 @@ export const postUpload = async (req, res) => {
       manufacturer,
       place,
       code,
+      owner: _id,
       hashtags: Equip.formatHashtags(hashtags),
     });
     return res.redirect("/");
