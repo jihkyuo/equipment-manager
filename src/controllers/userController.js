@@ -1,4 +1,5 @@
 import User from "../models/User";
+import Equip from "../models/Equips";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
@@ -272,7 +273,7 @@ export const postChangePassword = async (req, res) => {
 
 export const seeUser = async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById(id);
+  const user = await User.findById(id).populate("equips");
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User not found." });
   }

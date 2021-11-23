@@ -12,12 +12,11 @@ export const home = async (req, res) => {
 
 export const see = async (req, res) => {
   const { id } = req.params;
-  const equips = await Equip.findById(id);
-  const owner = await User.findById(equips.owner);
+  const equips = await Equip.findById(id).populate("owner");
   if (!equips) {
     return res.render("404", { pageTitle: "Equip not found." });
   }
-  return res.render("see", { pageTitle: equips.name, equips, owner });
+  return res.render("see", { pageTitle: equips.name, equips });
 };
 
 export const getEdit = async (req, res) => {
@@ -58,7 +57,7 @@ export const postUpload = async (req, res) => {
   const { path: fileUrl } = req.file;
   const { name, description, manufacturer, place, code, hashtags } = req.body;
   try {
-    await Equip.create({
+    const newEquip = await Equip.create({
       name,
       description,
       fileUrl,
@@ -68,6 +67,9 @@ export const postUpload = async (req, res) => {
       owner: _id,
       hashtags: Equip.formatHashtags(hashtags),
     });
+    const user = await User.findById(_id);
+    user.equips.push(newEquip._id);
+    user.save();
     return res.redirect("/");
   } catch (error) {
     console.log(error);

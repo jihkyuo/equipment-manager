@@ -13,8 +13,8 @@ block content
         small=equips.createAt
     div
         small Uploaded by 
-            a(href=`/users/${owner._id}`) #{owner.name}
-    if String(equips.owner) === String(loggedInUser._id)
+            a(href=`/users/${equips.owner._id}`) #{equips.owner.name}
+    if String(equips.owner._id) === String(loggedInUser._id)
         a(href=`${equips.id}/edit`) Edit Equip &rarr;
         br
         a(href=`${equips.id}/delete`) Delete Equip &rarr;
