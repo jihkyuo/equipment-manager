@@ -22,6 +22,9 @@ export const see = async (req, res) => {
 export const getEdit = async (req, res) => {
   const { id } = req.params;
   const equips = await Equip.findById(id);
+  if (String(req.session.user._id) !== String(equips.owner)) {
+    return res.status(403).redirect("/");
+  }
   if (!equips) {
     return res.status(404).render("404", { pageTitle: "Equip not found." });
   }
@@ -31,9 +34,13 @@ export const getEdit = async (req, res) => {
 export const postEdit = async (req, res) => {
   const { id } = req.params;
   const { name, description, manufacturer, place, code, hashtags } = req.body;
-  const equips = await Equip.exists({ _id: id });
+  const equips = await Equip.findById(id);
   if (!equips) {
     return res.status(404).render("404", { pageTitle: "Equip not found." });
+  }
+  console.log(equips);
+  if (String(req.session.user._id) !== String(equips.owner)) {
+    return res.status(403).redirect("/");
   }
   await Equip.findByIdAndUpdate(id, {
     name,
@@ -69,7 +76,7 @@ export const postUpload = async (req, res) => {
     });
     const user = await User.findById(_id);
     user.equips.push(newEquip._id);
-    user.save();
+    await user.save();
     return res.redirect("/");
   } catch (error) {
     console.log(error);
@@ -82,6 +89,13 @@ export const postUpload = async (req, res) => {
 
 export const deleteEquip = async (req, res) => {
   const { id } = req.params;
+  const equips = await Equip.findById(id);
+  if (!equips) {
+    return res.status(404).render("404", { pageTitle: "Equip not found." });
+  }
+  if (String(req.session.user._id) !== String(equips.owner)) {
+    return res.status(403).redirect("/");
+  }
   await Equip.findByIdAndDelete(id);
   return res.redirect("/");
 };

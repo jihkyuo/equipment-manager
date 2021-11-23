@@ -14,7 +14,8 @@ block content
     div
         small Uploaded by 
             a(href=`/users/${equips.owner._id}`) #{equips.owner.name}
-    if String(equips.owner._id) === String(loggedInUser._id)
-        a(href=`${equips.id}/edit`) Edit Equip &rarr;
-        br
-        a(href=`${equips.id}/delete`) Delete Equip &rarr;
+    if loggedInUser
+        if String(equips.owner._id) === String(loggedInUser._id)
+            a(href=`${equips.id}/edit`) Edit Equip &rarr;
+            br
+            a(href=`${equips.id}/delete`) Delete Equip &rarr;

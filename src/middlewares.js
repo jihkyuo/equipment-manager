@@ -5,7 +5,7 @@ export const localsMiddleware = (req, res, next) => {
   res.locals.loggedInUser = req.session.user;
   res.locals.siteName = "Equip";
   // console.log("local에 담은 user의 세션", res.locals);
-  console.log(req.session);
+  // console.log(req.session);
   next();
 };
 
@@ -25,10 +25,6 @@ export const publicOnlyMiddleware = (req, res, next) => {
   } else {
     return res.redirect("/");
   }
-};
-
-export const ownerOnlyMiddleware = (req, res, next) => {
-  // owner가 아닌 user가 접근 시 홈으로 리다이렉트 시킨다.
 };
 
 export const avatarUpload = multer({
