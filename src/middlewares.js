@@ -27,6 +27,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
   }
 };
 
+// 파일 업로드를 위한 미들웨어
 export const avatarUpload = multer({
   dest: "uploads/avatars/",
   limits: {
