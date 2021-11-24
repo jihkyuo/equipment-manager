@@ -4,8 +4,8 @@
   "description": "The best way manage equipment",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js",
-    "assets": "webpack --config webpack.config.js"
+    "dev:server": "nodemon",
+    "dev:assets": "webpack"
   },
   "author": "JIO",
   "license": "ISC",
@@ -27,6 +27,7 @@
     "@babel/preset-env": "^7.15.0",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
+    "mini-css-extract-plugin": "^2.4.5",
     "nodemon": "^2.0.12",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
