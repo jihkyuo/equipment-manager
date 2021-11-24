@@ -50,8 +50,11 @@ app.use(
 // local 미들웨어 가져오기
 app.use(localsMiddleware);
 
-// 루트 Router 사용하기
+// express에게 폴더 노출시키기
 app.use("/uploads", express.static("uploads"));
+app.use("/static", express.static("assets"));
+
+// 루트 Router 사용하기
 app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/equip", equipRouter);
