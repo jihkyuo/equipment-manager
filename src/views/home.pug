@@ -2,8 +2,8 @@ extends base
 include mixins/equip
 
 block content        
-    ul
+    div.equip-grid
         each item in equips
             +equipsmixin(item)
         else 
-            li Sorry nothing found.
+            span.empty__message No Equips found

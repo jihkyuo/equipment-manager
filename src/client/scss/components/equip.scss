@@ -1,0 +1,22 @@
+// equip mixin
+
+.equip-mixin {
+  .equip-mixin__thumb {
+    height: 140px;
+    border-radius: 7px;
+    width: 100%;
+    background-color: ivory;
+  }
+  .equip-mixin__data {
+    padding: 0px 15px;
+    .equip-mixin__title {
+      font-size: 18px;
+      margin-top: 10px;
+      display: block;
+    }
+    .equip-mixin__meta {
+      margin-top: 10px;
+      font-size: 5px;
+    }
+  }
+}

@@ -3,7 +3,9 @@ import User from "../models/User";
 
 export const home = async (req, res) => {
   try {
-    const equips = await Equip.find({}).sort({ createAt: "desc" });
+    const equips = await Equip.find({})
+      .sort({ createAt: "desc" })
+      .populate("owner");
     return res.render("home", { pageTitle: "Home", equips });
   } catch {
     return res.render("server-error");

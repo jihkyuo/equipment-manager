@@ -2,9 +2,12 @@ extends base
 include mixins/equip
 
 block content 
-    form(method="GET")
+    form(method="GET").search__form
         input(placeholder="Search by Equip name", trpe="text", name="keyword")
         input(type="submit", value="Search now")
 
-    each item in equips 
-        +equipsmixin(item)
+    div.equip-grid
+        each item in equips 
+            +equipsmixin(item)
+        else 
+            span.empty__message No Equips found

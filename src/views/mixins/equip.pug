@@ -1,12 +1,8 @@
 mixin equipsmixin(equip)
-    div
-        h2
-            a(href=`/equip/${equip.id}`)=equip.name 
-        h4 자산등록코드 : #{equip.code}
-        p=equip.description 
-        ul 
-            each hashtag in equip.hashtags
-                li=hashtag
-        small=equip.createAt
-        hr
-            
+    a(href=`/equip/${equip.id}`).equip-mixin
+        div.equip-mixin__thumb
+        div.equip-mixin__data
+            span.equip-mixin__title=equip.name 
+            div.equip-mixin__meta
+                span #{equip.owner.username} • 
+                span #{equip.meta.views} 회
