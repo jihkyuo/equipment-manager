@@ -4,7 +4,9 @@ include mixins/equip
 block content 
     form(method="GET").search__form
         input(placeholder="Search by Equip name", trpe="text", name="keyword")
-        input(type="submit", value="Search now")
+        button
+            i.fas.fa-search
+            
 
     div.equip-grid
         each item in equips 

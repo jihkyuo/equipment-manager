@@ -190,20 +190,15 @@ export const postEdit = async (req, res) => {
   const loggedInUserEmail = res.locals.loggedInUser.email;
   const pageTitle = `Edit ${res.locals.loggedInUser.name}의 Profile`;
   const exists = await User.exists({ $or: [{ username }, { email }] });
-  if (username == loggedInUserUsername) {
+  if (exists && username !== loggedInUserUsername) {
     return res.status(400).render("edit-profile", {
       pageTitle,
-      errorMessage: "본인의 username을 입력했습니다.",
+      errorMessage: "입력한 username은 이미 있습니다.",
     });
-  } else if (email == loggedInUserEmail) {
+  } else if (exists && email !== loggedInUserEmail) {
     return res.status(400).render("edit-profile", {
       pageTitle,
-      errorMessage: "본인의 email을 입력했습니다.",
-    });
-  } else if (exists) {
-    return res.status(400).render("edit-profile", {
-      pageTitle,
-      errorMessage: "입력한 username/email은 이미 있습니다.",
+      errorMessage: "입력한 email은 이미 있습니다.",
     });
   }
 
@@ -274,6 +269,17 @@ export const postChangePassword = async (req, res) => {
 export const seeUser = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id).populate("equips");
+  /*
+  더블 populate
+  ({
+    path: "equips",
+    populate: {
+      path: "owner",
+      model: "User",
+    },
+  });
+  */
+
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User not found." });
   }

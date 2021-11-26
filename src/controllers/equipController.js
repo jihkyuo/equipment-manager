@@ -18,6 +18,7 @@ export const see = async (req, res) => {
   if (!equips) {
     return res.render("404", { pageTitle: "Equip not found." });
   }
+  console.log(equips);
   return res.render("see", { pageTitle: equips.name, equips });
 };
 
@@ -110,7 +111,7 @@ export const search = async (req, res) => {
       name: {
         $regex: new RegExp(keyword, "i"),
       },
-    });
+    }).populate("owner");
   }
   return res.render("search", { pageTitle: "Search", equips });
 };
