@@ -2,20 +2,24 @@ extends base
 
 block content
     video(src='/' + equips.fileUrl, controls)
-    h3=equips.code
-    h4=equips.description 
-    ul
-        li=equips.manufacturer 
-        li=equips.place 
-        li=equips.hashtags 
-        li #{equips.meta.views} #{equips.meta.views === 1 ? "view" : "views"}
-    p 
-        small=equips.createAt
-    div
-        small Uploaded by 
-            a(href=`/users/${equips.owner._id}`) #{equips.owner.name}
-    if loggedInUser
-        if String(equips.owner._id) === String(loggedInUser._id)
-            a(href=`${equips.id}/edit`) Edit Equip &rarr;
-            br
-            a(href=`${equips.id}/delete`) Delete Equip &rarr;
+    //-
+        h3=equips.code
+        h4=equips.description 
+        ul
+            li=equips.manufacturer 
+            li=equips.place 
+            li=equips.hashtags 
+            li #{equips.meta.views} #{equips.meta.views === 1 ? "view" : "views"}
+        p 
+            small=equips.createAt
+        div
+            small Uploaded by 
+                a(href=`/users/${equips.owner._id}`) #{equips.owner.name}
+        if loggedInUser
+            if String(equips.owner._id) === String(loggedInUser._id)
+                a(href=`${equips.id}/edit`) Edit Equip &rarr;
+                br
+                a(href=`${equips.id}/delete`) Delete Equip &rarr;
+
+    block scripts 
+        script(src="/static/js/videoPlayer.js")

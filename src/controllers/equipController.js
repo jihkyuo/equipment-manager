@@ -115,3 +115,14 @@ export const search = async (req, res) => {
   }
   return res.render("search", { pageTitle: "Search", equips });
 };
+
+export const registerView = async (req, res) => {
+  const { id } = req.params;
+  const equip = await Equip.findById(id);
+  if (!equip) {
+    return res.status(404);
+  }
+  equip.meta.views += 1;
+  await equip.save();
+  return res.status(200);
+};

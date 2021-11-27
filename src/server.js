@@ -13,6 +13,7 @@ import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import equipRouter from "./routers/equipRouter";
+import apiRouter from "./routers/apiRouter";
 
 // local 미들웨어 import
 import { localsMiddleware, protectorMiddleware } from "./middlewares";
@@ -58,5 +59,6 @@ app.use("/static", express.static("assets"));
 app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/equip", equipRouter);
+app.use("/api", apiRouter);
 
 export default app;
