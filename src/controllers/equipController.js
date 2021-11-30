@@ -120,9 +120,9 @@ export const registerView = async (req, res) => {
   const { id } = req.params;
   const equip = await Equip.findById(id);
   if (!equip) {
-    return res.status(404);
+    return res.sendStatus(404);
   }
   equip.meta.views += 1;
   await equip.save();
-  return res.status(200);
+  return res.sendStatus(200);
 };
