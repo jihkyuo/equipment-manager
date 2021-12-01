@@ -1,3 +1,6 @@
+// async await 사용 => regeneratorRuntime 에러발생 => 최상단에 작성하여 전역으로 import
+import regeneratorRuntime from "regenerator-runtime";
+
 // .env 환경변수를 사용하기 위해 우리 앱의 가장 먼저 시작되는 부분에 작성하였다.
 // require("dotenv").config();
 import "dotenv/config";
