@@ -34,10 +34,10 @@ app.use(express.urlencoded({ extended: true }));
 // 세션 미들웨어 초기화: 이 미들웨어가 브라우저에 쿠키를 전송한다.
 app.use(
   session({
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
   })
 );
 
