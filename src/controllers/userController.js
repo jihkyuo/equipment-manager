@@ -141,7 +141,7 @@ export const finishGithubLogin = async (req, res) => {
       return res.redirect("/login");
     }
 
-    // emailObj의 조건을 가진 email을 발견 했을 때
+    // emailObj의 조건을 가진 email을 발견 했을 때d
     let user = await User.findOne({ email: emailObj.email });
     // 로그인 시킴
     if (!user) {
