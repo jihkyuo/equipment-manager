@@ -16,7 +16,7 @@ import "./models/User";
 import app from "./server";
 
 // app에 port 생성, ⬆⬆ 모든 내용을 listen한다.
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () =>
   console.log(`✅ Server Listening on port http://localhost:${PORT}`)
