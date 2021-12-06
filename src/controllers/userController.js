@@ -193,7 +193,7 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
-  console.log(file);
+
   // 나중에 더 깔끔하게 코드를 만들어보자.
   const loggedInUserUsername = res.locals.loggedInUser.username;
   const loggedInUserEmail = res.locals.loggedInUser.email;
@@ -214,7 +214,7 @@ export const postEdit = async (req, res) => {
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
-      avatarUrl: file ? file.path : avatarUrl,
+      avatarUrl: file ? file.location : avatarUrl,
       name,
       email,
       username,

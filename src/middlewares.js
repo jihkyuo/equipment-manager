@@ -8,7 +8,7 @@ const s3 = new aws.S3({
     secretAccessKey: process.env.AWS_SECRET,
   },
 });
-// console.log(process.env.NODE_ENV);
+
 const multerUploader = multerS3({
   s3: s3,
   bucket: "jioequip",
@@ -50,6 +50,7 @@ export const avatarUpload = multer({
   },
   storage: multerUploader,
 });
+
 export const videoUpload = multer({
   dest: "uploads/videos/",
   limits: {
