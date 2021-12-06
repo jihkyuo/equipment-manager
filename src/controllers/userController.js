@@ -73,7 +73,10 @@ export const startGithubLogin = (req, res) => {
 
   const baseUrl = "https://github.com/login/oauth/authorize";
   const config = {
-    client_id: process.env.GH_CLIENT,
+    client_id:
+      process.env.NODE_ENV === "production"
+        ? process.env.GH_CLIENT
+        : process.env.GH_CLIENT_DEV,
     allow_signup: false,
     scope: "read:user user:email",
   };
@@ -85,8 +88,14 @@ export const startGithubLogin = (req, res) => {
 export const finishGithubLogin = async (req, res) => {
   const baseUrl = "https://github.com/login/oauth/access_token";
   const config = {
-    client_id: process.env.GH_CLIENT,
-    client_secret: process.env.GH_SECRET,
+    client_id:
+      process.env.NODE_ENV === "production"
+        ? process.env.GH_CLIENT
+        : process.env.GH_CLIENT_DEV,
+    client_secret:
+      process.env.NODE_ENV === "production"
+        ? process.env.GH_SECRET
+        : process.env.GH_SECRET_DEV,
     code: req.query.code,
   };
   const params = new URLSearchParams(config).toString();
@@ -184,7 +193,7 @@ export const postEdit = async (req, res) => {
     body: { name, email, username, location },
     file,
   } = req;
-
+  console.log(file);
   // 나중에 더 깔끔하게 코드를 만들어보자.
   const loggedInUserUsername = res.locals.loggedInUser.username;
   const loggedInUserEmail = res.locals.loggedInUser.email;
@@ -201,7 +210,7 @@ export const postEdit = async (req, res) => {
       errorMessage: "입력한 email은 이미 있습니다.",
     });
   }
-
+  console.log(file);
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
