@@ -18,6 +18,7 @@ header
                         if !loggedInUser.avatarUrl
                             span 😃 #{loggedInUser.name}
                         else
+                            //깃헙 초기 로그인 시 avatar표시안됨
                             if loggedInUser.avatarUrl
                                 if loggedInUser.avatarUrl.includes("github")
                                     img.header__avatar(src=loggedInUser.avatarUrl)
